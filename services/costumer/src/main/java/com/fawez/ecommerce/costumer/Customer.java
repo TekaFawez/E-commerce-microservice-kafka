@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Data
 @Document
-public class Costumer {
+public class Customer {
     private String id;
     private String firstName;
     private String lastName;
