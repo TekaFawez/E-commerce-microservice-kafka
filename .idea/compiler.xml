@@ -12,6 +12,7 @@
         <module name="config_server" />
         <module name="discovery" />
         <module name="order" />
+        <module name="payement" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +25,7 @@
       <module name="costumer" options="-parameters" />
       <module name="discovery" options="-parameters" />
       <module name="order" options="-parameters" />
+      <module name="payement" options="-parameters" />
       <module name="product" options="-parameters" />
       <module name="project" options="-parameters" />
     </option>

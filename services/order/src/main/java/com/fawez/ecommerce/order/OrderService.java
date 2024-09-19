@@ -6,6 +6,8 @@ import com.fawez.ecommerce.kafka.OrderConfirmation;
 import com.fawez.ecommerce.kafka.OrderProducer;
 import com.fawez.ecommerce.orderline.OrderLineRequest;
 import com.fawez.ecommerce.orderline.OrderLineService;
+import com.fawez.ecommerce.payment.PaymentClient;
+import com.fawez.ecommerce.payment.PaymentRequest;
 import com.fawez.ecommerce.product.ProductClient;
 import com.fawez.ecommerce.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +26,7 @@ public class OrderService {
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
 private final OrderProducer orderProducer;
+private final PaymentClient paymentClient;
     public Integer createOrder(OrderRequest request) {
         //check the costumer--open feign
         var customer=customerClient.findCostumerById(request.customerId())
@@ -52,6 +55,15 @@ private final OrderProducer orderProducer;
         }
 
         //to do start the payments
+        paymentClient.requestOrderPayment(
+                new PaymentRequest(
+                        request.amount(),
+                        request.paymentMethod(),
+                        order.getId(),
+                        order.getReference(),
+                        customer
+                )
+        );
 
         //send the order confirmation (kafka)
         this.orderProducer.sendOrderConfirmation(
