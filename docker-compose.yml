@@ -37,6 +37,7 @@ services:
     container_name: mongo_db
     ports:
       - 27017:27017
+
     volumes:
       - mongo:/data
     environment:
@@ -59,6 +60,16 @@ services:
       ME_CONFIG_BASICAUTH: true
       ME_CONFIG_BASICAUTH_USERNAME: fawez
       ME_CONFIG_BASICAUTH_PASSWORD: fawez
+#  mongo-express:
+#    image: mongo-express
+#    container_name: mongo_express
+#    restart: always
+#    ports:
+#      - 8081:8081
+#    environment:
+#      - ME_CONFIG_MONGODB_ADMINUSERNAME=fawez
+#      - ME_CONFIG_MONGODB_ADMINPASSWORD=fawez
+#      - ME_CONFIG_MONGODB_SERVER=mongodb
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper

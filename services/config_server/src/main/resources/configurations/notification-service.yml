@@ -3,8 +3,8 @@ server:
 spring:
   data:
     mongodb:
-      username: fawez
-      password: fawez
+      username: alibou
+      password: alibou
       host: localhost
       port: 27017
       database: notification
@@ -12,7 +12,7 @@ spring:
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
-      group-id: paymentGroup,orderGroup
+      group-id: orderGroup,paymentGroup
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer

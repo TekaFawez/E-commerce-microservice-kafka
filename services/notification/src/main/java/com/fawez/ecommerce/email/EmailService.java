@@ -13,15 +13,19 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.fawez.ecommerce.email.EmailTemplates.ORDER_CONFIRMATION;
+import static com.fawez.ecommerce.email.EmailTemplates.PAYMENT_CONFIRMATION;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class EmailService {
+
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
@@ -32,39 +36,35 @@ public class EmailService {
             BigDecimal amount,
             String orderReference
     ) throws MessagingException {
-        MimeMessage mimeMessage=mailSender.createMimeMessage();
-        MimeMessageHelper messageHelper=
-                new MimeMessageHelper(mimeMessage,MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
         messageHelper.setFrom("fawezteka2@gmail.com");
-        final String templateName=EmailTemplates.PAYMENT_CONFIRMATION.getTemplate();
 
-        Map<String,Object> variables=new HashMap<>();
-        variables.put("customerName",customerName);
-        variables.put("amount",amount);
-        variables.put("orderReference",orderReference);
+        final String templateName = PAYMENT_CONFIRMATION.getTemplate();
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("customerName", customerName);
+        variables.put("amount", amount);
+        variables.put("orderReference", orderReference);
 
         Context context = new Context();
         context.setVariables(variables);
-        messageHelper.setSubject(EmailTemplates.PAYMENT_CONFIRMATION.getSubject());
+        messageHelper.setSubject(PAYMENT_CONFIRMATION.getSubject());
 
         try {
-            String htmlTemplate =templateEngine.process(templateName,context);
-            messageHelper.setText(htmlTemplate,true);
+            String htmlTemplate = templateEngine.process(templateName, context);
+            messageHelper.setText(htmlTemplate, true);
+
             messageHelper.setTo(destinationEmail);
             mailSender.send(mimeMessage);
-
-            log.info(String.format("INFO-email send success to %s with template %s",destinationEmail,templateName));
-
-
-        } catch (MessagingException e){
-            log.warn("cannot send email to {}",destinationEmail);
-
+            log.info(String.format("INFO - Email successfully sent to %s with template %s ", destinationEmail, templateName));
+        } catch (MessagingException e) {
+            log.warn("WARNING - Cannot send Email to {} ", destinationEmail);
         }
 
-
-
     }
+
     @Async
     public void sendOrderConfirmationEmail(
             String destinationEmail,
@@ -73,39 +73,33 @@ public class EmailService {
             String orderReference,
             List<Product> products
     ) throws MessagingException {
-        MimeMessage mimeMessage=mailSender.createMimeMessage();
-        MimeMessageHelper messageHelper=
-                new MimeMessageHelper(mimeMessage,MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
         messageHelper.setFrom("fawezteka2@gmail.com");
-        final String templateName=EmailTemplates.ORDER_CONFIRMATION.getTemplate();
 
-        Map<String,Object> variables=new HashMap<>();
-        variables.put("customerName",customerName);
-        variables.put("TotalAmount",amount);
-        variables.put("orderReference",orderReference);
-        variables.put("products",products);
+        final String templateName = ORDER_CONFIRMATION.getTemplate();
 
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("customerName", customerName);
+        variables.put("totalAmount", amount);
+        variables.put("orderReference", orderReference);
+        variables.put("products", products);
 
         Context context = new Context();
         context.setVariables(variables);
-        messageHelper.setSubject(EmailTemplates.ORDER_CONFIRMATION.getSubject());
+        messageHelper.setSubject(ORDER_CONFIRMATION.getSubject());
 
         try {
-            String htmlTemplate =templateEngine.process(templateName,context);
-            messageHelper.setText(htmlTemplate,true);
+            String htmlTemplate = templateEngine.process(templateName, context);
+            messageHelper.setText(htmlTemplate, true);
+
             messageHelper.setTo(destinationEmail);
             mailSender.send(mimeMessage);
-
-            log.info(String.format("INFO-email send success to %s with template %s",destinationEmail,templateName));
-
-
-        } catch (MessagingException e){
-            log.warn("cannot send email to {}",destinationEmail);
-
+            log.info(String.format("INFO - Email successfully sent to %s with template %s ", destinationEmail, templateName));
+        } catch (MessagingException e) {
+            log.warn("WARNING - Cannot send Email to {} ", destinationEmail);
         }
-
-
 
     }
 }

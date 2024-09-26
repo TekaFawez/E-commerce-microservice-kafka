@@ -3,9 +3,22 @@ server:
 spring:
   data:
     mongodb:
+#      uri: mongodb://fawez:fawez@localhost:27017/customer?authSource=admin
       username: fawez
       password: fawez
       host: localhost
       port: 27017
       database: customer
       authentication-database: admin
+#server:
+#  port: 8090
+#spring:
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/customer
+#server:
+#  port: 8090
+#spring:
+#  data:
+#    mongodb:
+#      uri: mongodb://fawez:fawez@localhost:27017/customer?authSource=admin

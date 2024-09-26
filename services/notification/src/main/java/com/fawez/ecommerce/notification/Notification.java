@@ -1,4 +1,4 @@
-package com.fawez.ecommerce.notifaction;
+package com.fawez.ecommerce.notification;
 
 import com.fawez.ecommerce.kafka.order.OrderConfirmation;
 import com.fawez.ecommerce.kafka.payment.PaymentConfirmation;

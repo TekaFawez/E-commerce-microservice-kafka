@@ -1,7 +1,8 @@
 package com.fawez.ecommerce.payment;
 
-import com.fawez.ecommerce.notifaction.NotificationProducer;
-import com.fawez.ecommerce.notifaction.PaymentNotificationRequest;
+
+import com.fawez.ecommerce.notification.NotificationProducer;
+import com.fawez.ecommerce.notification.PaymentNotificationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class PaymentService {
     private final PaymentRepository repository;
     private final PaymentMapper mapper;
-    private NotificationProducer notificationProducer;
+    private final NotificationProducer notificationProducer;
     public Integer createPayment(PaymentRequest request) {
         var payment= repository.save(mapper.toPayment(request));
         notificationProducer.sendNotification(

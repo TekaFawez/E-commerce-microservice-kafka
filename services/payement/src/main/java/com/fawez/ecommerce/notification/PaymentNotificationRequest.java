@@ -1,4 +1,5 @@
-package com.fawez.ecommerce.notifaction;
+
+package com.fawez.ecommerce.notification;
 
 import com.fawez.ecommerce.payment.PaymentMethod;
 
